@@ -136,6 +136,7 @@ class Sulfuras extends Generic {
   }
 
   updateQuality(item) {
+    item.quality = 80;
   }
 }
 
