@@ -9,11 +9,23 @@ it("decreases expiry and quality", function() {
   expect(items[0].quality).toBe(9);
 });
 
-it("quality degrades twice as fast once sell by date has passed", function() {
+it("degrades quality twice as fast after sell by date has passed", function() {
   const gildedRose = new Shop([new Item("generic", 0, 10)]);
 
   const items = gildedRose.updateQuality();
 
   expect(items[0].sellIn).toBe(-1);
   expect(items[0].quality).toBe(8);
+});
+
+it("never degrades quality below zero", function() {
+  const gildedRose = new Shop([
+      new Item("generic", 0, 1),
+      new Item("generic", 0, 0)
+  ]);
+
+  const items = gildedRose.updateQuality();
+
+  expect(items[0].quality).toBe(0);
+  expect(items[1].quality).toBe(0);
 });
