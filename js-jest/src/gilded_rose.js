@@ -27,7 +27,7 @@ class HandlerFactory {
       new Brie,
       new BackstagePasses,
       new Conjured,
-      new Generic
+      new DefaultHandler
     ];
   }
 
@@ -40,7 +40,7 @@ class HandlerFactory {
   }
 }
 
-class Generic {
+class DefaultHandler {
   canHandle(item) {
     return true;
   }
@@ -72,7 +72,7 @@ class Generic {
   }
 }
 
-class Brie extends Generic {
+class Brie extends DefaultHandler {
   canHandle(item) {
     return item.name === 'Aged Brie';
   }
@@ -87,7 +87,7 @@ class Brie extends Generic {
   }
 }
 
-class BackstagePasses extends Generic {
+class BackstagePasses extends DefaultHandler {
   canHandle(item) {
     return item.name === 'Backstage passes to a TAFKAL80ETC concert';
   }
@@ -112,7 +112,7 @@ class BackstagePasses extends Generic {
   }
 }
 
-class Conjured extends Generic {
+class Conjured extends DefaultHandler {
   canHandle(item) {
     return item.name === 'Conjured';
   }
@@ -127,7 +127,7 @@ class Conjured extends Generic {
   }
 }
 
-class Sulfuras extends Generic {
+class Sulfuras extends DefaultHandler {
   canHandle(item) {
     return item.name === 'Sulfuras, Hand of Ragnaros';
   }
