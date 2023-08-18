@@ -16,55 +16,71 @@ class Shop {
         continue;
       }
 
-      if (this.items[i].name != 'Aged Brie' && this.items[i].name != 'Backstage passes to a TAFKAL80ETC concert') {
-        if (this.items[i].quality > 0) {
-          this.items[i].quality = this.items[i].quality - 1;
-        }
-      } else {
-        if (this.items[i].quality < 50) {
-          this.items[i].quality = this.items[i].quality + 1;
-          if (this.items[i].name == 'Backstage passes to a TAFKAL80ETC concert') {
-            if (this.items[i].sellIn < 11) {
-              if (this.items[i].quality < 50) {
-                this.items[i].quality = this.items[i].quality + 1;
-              }
-            }
-            if (this.items[i].sellIn < 6) {
-              if (this.items[i].quality < 50) {
-                this.items[i].quality = this.items[i].quality + 1;
-              }
-            }
-          }
-        }
-      }
-
-      this.items[i].sellIn = this.items[i].sellIn - 1; // decrease expiry date
-
-      if (this.items[i].sellIn >= 0) {
-        continue;
-      }
-
       if (this.items[i].name == 'Aged Brie') {
-        this.items[i].quality = this.genericIncrement(this.items[i]);
+        this.updateBrie(this.items[i]);
         continue;
       }
 
       if (this.items[i].name == 'Backstage passes to a TAFKAL80ETC concert') {
-        this.items[i].quality = this.items[i].quality - this.items[i].quality; // setting quality to 0
+        this.updateBackstagePasses(this.items[i]);
         continue;
       }
 
-      if (this.items[i].quality > 0) {
-        this.items[i].quality = this.items[i].quality - 1;
-      }
+      this.updateGeneric(this.items[i]);
     }
 
     return this.items;
   }
 
+  updateGeneric(item) {
+    item.quality = this.genericDecrement(item);
+
+    item.sellIn = item.sellIn - 1;
+
+    if (item.sellIn < 0) {
+      item.quality = this.genericDecrement(item);
+    }
+  }
+
+  updateBrie(item) {
+    item.quality =  this.genericIncrement(item);
+
+    item.sellIn = item.sellIn - 1;
+
+    if (item.sellIn < 0) {
+      item.quality =  this.genericIncrement(item);
+    }
+  }
+
+  updateBackstagePasses(item) {
+    item.quality =  this.genericIncrement(item);
+
+    if (item.sellIn < 11) {
+      item.quality = this.genericIncrement(item);
+    }
+
+    if (item.sellIn < 6) {
+      item.quality = this.genericIncrement(item);
+    }
+
+    item.sellIn = item.sellIn - 1;
+
+    if (item.sellIn < 0) {
+      item.quality = 0;
+    }
+  }
+
   genericIncrement(item) {
     if (item.quality < 50) {
       return item.quality + 1;
+    }
+
+    return item.quality;
+  }
+
+  genericDecrement(item) {
+    if (item.quality > 0) {
+      return item.quality - 1;
     }
 
     return item.quality;
