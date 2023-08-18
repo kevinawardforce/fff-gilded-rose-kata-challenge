@@ -83,3 +83,15 @@ it("increases quality of backstage passes until expiration", function() {
   expect(items[2].quality).toBe(4);
   expect(items[3].quality).toBe(0);
 });
+
+it("decreases quality of Conjured twice as fast as generic", function() {
+  const gildedRose = new Shop([
+    new Item("Conjured", 10, 10),
+    new Item("Conjured", 0, 10),
+  ]);
+
+  const items = gildedRose.updateQuality();
+
+  expect(items[0].quality).toBe(8);
+  expect(items[1].quality).toBe(6);
+});
