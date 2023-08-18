@@ -1,5 +1,5 @@
 
-const {HandlerFactory} = require("./factory/handler_factory");
+const {HandlerFactory} = require("./handlers/factory");
 
 class Item {
   constructor(name, sellIn, quality){

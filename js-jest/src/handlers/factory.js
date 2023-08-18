@@ -1,4 +1,8 @@
-const {DefaultHandler, Brie, BackstagePasses, Conjured, Sulfuras} = require("./handlers");
+const {DefaultHandler} = require('./default');
+const {Brie} = require('./brie');
+const {BackstagePasses} = require('./backstage_passes');
+const {Conjured} = require('./conjured');
+const {Sulfuras} = require('./sulfuras');
 
 class HandlerFactory {
     constructor() {
