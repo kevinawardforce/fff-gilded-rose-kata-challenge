@@ -12,44 +12,49 @@ class Shop {
   }
   updateQuality() {
     for (let i = 0; i < this.items.length; i++) {
-      if (this.items[i].name == 'Sulfuras, Hand of Ragnaros') {
-        Sulfuras.updateSellIn(this.items[i]);
-        Sulfuras.updateQuality(this.items[i]);
-        continue;
-      }
-
-      if (this.items[i].name == 'Aged Brie') {
-        Brie.updateSellIn(this.items[i]);
-        Brie.updateQuality(this.items[i]);
-        continue;
-      }
-
-      if (this.items[i].name == 'Backstage passes to a TAFKAL80ETC concert') {
-        BackstagePasses.updateSellIn(this.items[i]);
-        BackstagePasses.updateQuality(this.items[i]);
-        continue;
-      }
-
-      if (this.items[i].name == 'Conjured') {
-        Conjured.updateSellIn(this.items[i]);
-        Conjured.updateQuality(this.items[i]);
-        continue;
-      }
-
-      GenericItem.updateSellIn(this.items[i]);
-      GenericItem.updateQuality(this.items[i]);
+      const handler = (new HandlerFactory).getHandler(this.items[i]);
+      handler.handle(this.items[i]);
     }
 
     return this.items;
   }
 }
 
-class GenericItem {
-  static updateSellIn(item) {
+class HandlerFactory {
+  constructor() {
+    this.handlers = [
+      new Sulfuras,
+      new Brie,
+      new BackstagePasses,
+      new Conjured,
+      new Generic
+    ];
+  }
+
+  getHandler(item) {
+    for (let i = 0; i < this.handlers.length; i++) {
+      if (this.handlers[i].canHandle(item)) {
+        return this.handlers[i];
+      }
+    }
+  }
+}
+
+class Generic {
+  canHandle(item) {
+    return true;
+  }
+
+  handle(item) {
+    this.updateSellIn(item);
+    this.updateQuality(item);
+  }
+
+  updateSellIn(item) {
     item.sellIn = item.sellIn - 1;
   }
 
-  static updateQuality(item) {
+  updateQuality(item) {
     if (item.sellIn < 0) {
       item.quality = this.decreaseQuality(item, 2);
       return;
@@ -58,17 +63,21 @@ class GenericItem {
     item.quality = this.decreaseQuality(item);
   }
 
-  static increaseQuality(item, quantity = 1) {
+  increaseQuality(item, quantity = 1) {
     return Math.min(item.quality + quantity, 50);
   }
 
-  static decreaseQuality(item, quantity = 1) {
+  decreaseQuality(item, quantity = 1) {
     return Math.max(item.quality - quantity, 0);
   }
 }
 
-class Brie extends GenericItem {
-  static updateQuality(item) {
+class Brie extends Generic {
+  canHandle(item) {
+    return item.name === 'Aged Brie';
+  }
+
+  updateQuality(item) {
     if (item.sellIn < 0) {
       item.quality = this.increaseQuality(item, 2);
       return;
@@ -78,8 +87,12 @@ class Brie extends GenericItem {
   }
 }
 
-class BackstagePasses extends GenericItem {
-  static updateQuality(item) {
+class BackstagePasses extends Generic {
+  canHandle(item) {
+    return item.name === 'Backstage passes to a TAFKAL80ETC concert';
+  }
+
+  updateQuality(item) {
     if (item.sellIn < 0) {
       item.quality = 0;
       return;
@@ -99,8 +112,12 @@ class BackstagePasses extends GenericItem {
   }
 }
 
-class Conjured extends GenericItem {
-  static updateQuality(item) {
+class Conjured extends Generic {
+  canHandle(item) {
+    return item.name === 'Conjured';
+  }
+
+  updateQuality(item) {
     if (item.sellIn < 0) {
       item.quality = this.decreaseQuality(item, 4);
       return;
@@ -110,11 +127,15 @@ class Conjured extends GenericItem {
   }
 }
 
-class Sulfuras extends GenericItem {
-  static updateSellIn(item) {
+class Sulfuras extends Generic {
+  canHandle(item) {
+    return item.name === 'Sulfuras, Hand of Ragnaros';
   }
 
-  static updateQuality(item) {
+  updateSellIn(item) {
+  }
+
+  updateQuality(item) {
   }
 }
 
