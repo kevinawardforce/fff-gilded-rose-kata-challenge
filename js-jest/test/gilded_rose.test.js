@@ -29,3 +29,14 @@ it("never degrades quality below zero", function() {
   expect(items[0].quality).toBe(0);
   expect(items[1].quality).toBe(0);
 });
+
+it("increases quality of Aged Brie", function() {
+  const gildedRose = new Shop([
+    new Item("Aged Brie", 10, 1)
+  ]);
+
+  const items = gildedRose.updateQuality();
+
+  expect(items[0].sellIn).toBe(9);
+  expect(items[0].quality).toBe(2);
+});
