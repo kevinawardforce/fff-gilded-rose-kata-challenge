@@ -65,7 +65,7 @@ it("never decreases quality and sell by date of Sulfuras", function() {
   const items = gildedRose.updateQuality();
 
   expect(items[0].sellIn).toBe(10);
-  expect(items[0].quality).toBe(10);
+  expect(items[0].quality).toBe(80);
 });
 
 it("increases quality of backstage passes until expiration", function() {
