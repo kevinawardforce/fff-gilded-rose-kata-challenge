@@ -63,3 +63,19 @@ it("never decreases quality and sell by date of Sulfuras", function() {
   expect(items[0].sellIn).toBe(10);
   expect(items[0].quality).toBe(10);
 });
+
+it("increases quality of backstage passes until expiration", function() {
+  const gildedRose = new Shop([
+    new Item("Backstage passes to a TAFKAL80ETC concert", 20, 1),
+    new Item("Backstage passes to a TAFKAL80ETC concert", 10, 1),
+    new Item("Backstage passes to a TAFKAL80ETC concert", 5, 1),
+    new Item("Backstage passes to a TAFKAL80ETC concert", 0, 1),
+  ]);
+
+  const items = gildedRose.updateQuality();
+
+  expect(items[0].quality).toBe(2);
+  expect(items[1].quality).toBe(3);
+  expect(items[2].quality).toBe(4);
+  expect(items[3].quality).toBe(0);
+});
