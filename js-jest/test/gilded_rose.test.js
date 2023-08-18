@@ -52,3 +52,14 @@ it("never increases quality above 50", function() {
 
   expect(items[0].quality).toBe(50);
 });
+
+it("never decreases quality and sell by date of Sulfuras", function() {
+  const gildedRose = new Shop([
+    new Item("Sulfuras, Hand of Ragnaros", 10, 10)
+  ]);
+
+  const items = gildedRose.updateQuality();
+
+  expect(items[0].sellIn).toBe(10);
+  expect(items[0].quality).toBe(10);
+});
