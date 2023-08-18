@@ -26,6 +26,11 @@ class Shop {
         continue;
       }
 
+      if (this.items[i].name == 'Conjured') {
+        this.updateConjured(this.items[i]);
+        continue;
+      }
+
       this.updateGeneric(this.items[i]);
     }
 
@@ -67,6 +72,18 @@ class Shop {
 
     if (item.sellIn < 0) {
       item.quality = 0;
+    }
+  }
+
+  updateConjured(item) {
+    item.quality = this.genericDecrement(item);
+    item.quality = this.genericDecrement(item);
+
+    item.sellIn = item.sellIn - 1;
+
+    if (item.sellIn < 0) {
+      item.quality = this.genericDecrement(item);
+      item.quality = this.genericDecrement(item);
     }
   }
 
